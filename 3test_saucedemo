@@ -1,0 +1,10 @@
+@pytest.mark.parametrize("username", ["standard_user", "locked_out_user", "problem_user", "performance_glitch_user"])
+def test_successful_login(driver, username):
+    # Ввод логина
+    driver.find_element(By.ID, "user-name").send_keys(username)
+    # Ввод корректного пароля
+    driver.find_element(By.ID, "password").send_keys("secret_sauce")
+    # Нажатие на кнопку Login
+    driver.find_element(By.ID, "login-button").click()
+    # Проверка, что открыта страница inventory
+    assert driver.current_url == "https://www.saucedemo.com/inventory.html"
