@@ -116,3 +116,67 @@ class TestSauceDemo:
 # pytest
 # selenium
 # webdriver-manager
+# import allure
+# from selenium.webdriver.common.by import By
+#
+# class LoginPage:
+#     def __init__(self, driver):
+#         self.driver = driver
+#         self.url = "https://www.saucedemo.com"
+#         self.username_input = (By.ID, "user-name")
+#         self.password_input = (By.ID, "password")
+#         self.login_button = (By.ID, "login-button")
+#         self.error_message = (By.CSS_SELECTOR, "h3[data-test='error']")
+#
+#     @allure.step("Открыть страницу логина")
+#     def open(self):
+#         self.driver.get(self.url)
+#         return self
+#
+#     @allure.step("Проверить, что открыта страница логина")
+#     def is_opened(self):
+#         return self.driver.current_url == self.url
+#
+#     @allure.step("Проверить, что поле логина пустое")
+#     def check_username_empty(self):
+#         return self.driver.find_element(*self.username_input).get_attribute("value") == ""
+#
+#     @allure.step("Проверить, что поле пароля пустое")
+#     def check_password_empty(self):
+#         return self.driver.find_element(*self.password_input).get_attribute("value") == ""
+#
+#     @allure.step("Нажать кнопку Login")
+#     def click_login(self):
+#         self.driver.find_element(*self.login_button).click()
+#         return self
+#
+#     @allure.step("Проверить сообщение об ошибке")
+#     def get_error_message(self):
+#         error_element = self.driver.find_element(*self.error_message)
+#         return {
+#             'text': error_element.text,
+#             'background_color': error_element.value_of_css_property('background-color')
+#         }
+#
+# @allure.feature("Login Functionality")
+# @allure.story("Empty Credentials Login Attempt")
+# def test_empty_credentials_login(driver):
+#     login_page = LoginPage(driver)
+#
+#     with allure.step("Открываем страницу логина"):
+#         login_page.open()
+#         assert login_page.is_opened(), "Страница логина не открылась"
+#
+#     with allure.step("Проверяем, что поля пустые"):
+#         assert login_page.check_username_empty(), "Поле логина не пустое"
+#         assert login_page.check_password_empty(), "Поле пароля не пустое"
+#
+#     with allure.step("Пытаемся залогиниться"):
+#         login_page.click_login()
+#         assert login_page.is_opened(), "Произошел переход со страницы логина"
+#
+#     with allure.step("Проверяем сообщение об ошибке"):
+#         error = login_page.get_error_message()
+#         assert error['text'] == "Epic sadface: Password is required", "Неверное сообщение об ошибке"
+#         # Проверка на красный фон (rgba(226, 35, 26, 1) - примерное значение красного цвета)
+#         assert "rgba(226, 35, 26" in error['background_color'], "Фон сообщения об ошибке не красный"
