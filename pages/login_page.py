@@ -1,24 +1,45 @@
 from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 
-class LoginPage(BasePage):
-    URL = "https://www.saucedemo.com"
-    USERNAME_INPUT = (By.ID, "user-name")
-    PASSWORD_INPUT = (By.ID, "password")
-    LOGIN_BUTTON = (By.ID, "login-button")
-    ERROR_MESSAGE = (By.CSS_SELECTOR, "h3[data-test='error']")
+import allure
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
+
+class LoginPage:
+    def __init__(self, driver):
+        self.driver = driver
+        self.url = "https://www.saucedemo.com"
+        self.username_input = (By.ID, "user-name")
+        self.password_input = (By.ID, "password")
+        self.login_button = (By.ID, "login-button")
+        self.error_message = (By.CLASS_NAME, "error-message-container")
+
+    @allure.step("Открыть страницу логина")
     def open(self):
-        self.open_url(self.URL)
+        self.driver.get(self.url)
 
+    @allure.step("Ввод логина: {username}")
     def enter_username(self, username):
-        self.enter_text(self.USERNAME_INPUT, username)
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located(self.username_input)
+        ).send_keys(username)
 
+    @allure.step("Ввод пароля: {password}")
     def enter_password(self, password):
-        self.enter_text(self.PASSWORD_INPUT, password)
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located(self.password_input)
+        ).send_keys(password)
 
+    @allure.step("Нажать кнопку Login")
     def click_login(self):
-        self.click(self.LOGIN_BUTTON)
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(self.login_button)
+        ).click()
 
+    @allure.step("Получение сообщения об ошибке")
     def get_error_message(self):
-        return self.get_text(self.ERROR_MESSAGE)
+        return WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located(self.error_message)
+        ).text
